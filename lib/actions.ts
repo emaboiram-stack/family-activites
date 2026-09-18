@@ -103,4 +103,5 @@ export async function resetWeek() {
     data: { completed: false },
   });
   revalidatePath("/semana");
+  redirect("/semana");
 }

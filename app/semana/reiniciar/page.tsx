@@ -1,11 +1,5 @@
 import Link from "next/link";
 import { resetWeek } from "@/lib/actions";
-import { redirect } from "next/navigation";
-
-async function resetWeekAndRedirect() {
-  await resetWeek();
-  redirect("/semana");
-}
 
 export default function ReiniciarSemanaPage() {
   return (
@@ -21,7 +15,7 @@ export default function ReiniciarSemanaPage() {
         </p>
       </div>
 
-      <form action={resetWeekAndRedirect}>
+      <form action={resetWeek}>
         <button
           type="submit"
           className="w-full rounded-xl bg-neutral-900 px-4 py-4 text-lg font-semibold text-white active:bg-neutral-700"

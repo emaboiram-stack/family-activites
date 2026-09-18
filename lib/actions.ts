@@ -97,3 +97,10 @@ export async function deleteActivity(formData: FormData) {
   revalidatePath("/semana");
   redirect("/semana");
 }
+
+export async function resetWeek() {
+  await prisma.activity.updateMany({
+    data: { completed: false },
+  });
+  revalidatePath("/semana");
+}

@@ -86,6 +86,13 @@ export default async function SemanaPage({
         </Link>
       </div>
 
+      <Link
+        href="/semana/reiniciar"
+        className="mb-5 block rounded-xl border border-dashed border-neutral-300 px-3 py-2 text-center text-sm font-medium text-neutral-500 active:bg-neutral-100"
+      >
+        Reiniciar semana (desmarcar todas)
+      </Link>
+
       <div className="flex flex-col gap-6">
         {DAYS.map((day) => (
           <section key={day}>

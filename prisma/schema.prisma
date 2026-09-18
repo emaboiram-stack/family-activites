@@ -1,0 +1,43 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum DayOfWeek {
+  LUNES
+  MARTES
+  MIERCOLES
+  JUEVES
+  VIERNES
+  SABADO
+  DOMINGO
+}
+
+model Member {
+  id        String     @id @default(cuid())
+  name      String
+  createdAt DateTime   @default(now())
+
+  assignedActivities Activity[] @relation("AssignedTo")
+  createdActivities  Activity[] @relation("CreatedBy")
+}
+
+model Activity {
+  id        String    @id @default(cuid())
+  title     String
+  dayOfWeek DayOfWeek
+  time      String?
+  completed Boolean   @default(false)
+  createdAt DateTime  @default(now())
+
+  memberId String
+  member   Member @relation("AssignedTo", fields: [memberId], references: [id], onDelete: Cascade)
+
+  createdByMemberId String
+  createdBy         Member @relation("CreatedBy", fields: [createdByMemberId], references: [id], onDelete: Cascade)
+}

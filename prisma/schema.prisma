@@ -25,6 +25,8 @@ model Member {
 
   assignedActivities Activity[] @relation("AssignedTo")
   createdActivities  Activity[] @relation("CreatedBy")
+  assignedEvents     Event[]    @relation("EventAssignedTo")
+  createdEvents      Event[]    @relation("EventCreatedBy")
 }
 
 model Activity {
@@ -40,4 +42,18 @@ model Activity {
 
   createdByMemberId String
   createdBy         Member @relation("CreatedBy", fields: [createdByMemberId], references: [id], onDelete: Cascade)
+}
+
+model Event {
+  id        String   @id @default(cuid())
+  title     String
+  date      DateTime
+  confirmed Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  memberId String
+  member   Member @relation("EventAssignedTo", fields: [memberId], references: [id], onDelete: Cascade)
+
+  createdByMemberId String
+  createdBy         Member @relation("EventCreatedBy", fields: [createdByMemberId], references: [id], onDelete: Cascade)
 }

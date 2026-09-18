@@ -105,3 +105,67 @@ export async function resetWeek() {
   revalidatePath("/semana");
   redirect("/semana");
 }
+
+// ---------- Eventos futuros ----------
+
+export async function createEvent(formData: FormData) {
+  const title = String(formData.get("title") ?? "").trim();
+  const date = String(formData.get("date") ?? "").trim();
+  const memberId = String(formData.get("memberId") ?? "");
+  const createdByMemberId = String(formData.get("createdByMemberId") ?? "");
+
+  if (!title || !date || !memberId || !createdByMemberId) {
+    throw new Error("Faltan datos para crear el evento");
+  }
+
+  await prisma.event.create({
+    data: {
+      title,
+      date: new Date(date),
+      memberId,
+      createdByMemberId,
+    },
+  });
+
+  revalidatePath("/calendario");
+  redirect("/calendario");
+}
+
+export async function updateEvent(formData: FormData) {
+  const id = String(formData.get("id") ?? "");
+  const title = String(formData.get("title") ?? "").trim();
+  const date = String(formData.get("date") ?? "").trim();
+  const memberId = String(formData.get("memberId") ?? "");
+
+  if (!id || !title || !date || !memberId) {
+    throw new Error("Faltan datos para editar el evento");
+  }
+
+  await prisma.event.update({
+    where: { id },
+    data: { title, date: new Date(date), memberId },
+  });
+
+  revalidatePath("/calendario");
+  redirect("/calendario");
+}
+
+export async function toggleEventConfirmed(formData: FormData) {
+  const id = String(formData.get("id") ?? "");
+  const current = await prisma.event.findUnique({ where: { id } });
+  if (!current) return;
+
+  await prisma.event.update({
+    where: { id },
+    data: { confirmed: !current.confirmed },
+  });
+
+  revalidatePath("/calendario");
+}
+
+export async function deleteEvent(formData: FormData) {
+  const id = String(formData.get("id") ?? "");
+  await prisma.event.delete({ where: { id } });
+  revalidatePath("/calendario");
+  redirect("/calendario");
+}

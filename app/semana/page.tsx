@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getActiveMemberId } from "@/lib/session";
 import { toggleActivity, switchMember } from "@/lib/actions";
 import { DAYS, DAY_LABELS } from "@/lib/days";
+import { SectionTabs } from "@/components/SectionTabs";
 
 export default async function SemanaPage({
   searchParams,
@@ -62,6 +63,8 @@ export default async function SemanaPage({
           </button>
         </form>
       </header>
+
+      <SectionTabs active="semana" />
 
       <div className="mb-5 flex gap-2 rounded-xl bg-neutral-100 p-1">
         <Link
